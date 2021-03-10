@@ -16,11 +16,59 @@ const connection = mysql.createConnection({
   database: 'employeeTracking_DB',
 });
 
+const start = () => {
+  inquirer
+  .prompt([
+    {
+      type: "list",
+      name: "userChoice",
+      message: "What would you like to do?",
+      choices: [
+        "Add a department",
+        "Add a role",
+        "Add an employee",
+        "View a department",
+        "View roles",
+        "View Employees",
+        "Update an Employee Role"
+      ],
+    }
+  ])
+  .then( (answer)=>{
 
+  })
 
+}
+/*
+* Add departments, roles, employees
 
+  * View departments, roles, employees
 
+  * Update employee roles
 
+*/
+function addDepartment(){
+
+}
+function addRole(){
+
+}
+function addEmployee(){
+
+}
+
+function viewDepartment(){
+
+}
+function viewRole(){
+
+}
+function viewEmployee(){
+
+}
+function updateEmployee(){
+  
+}
 
 
 
