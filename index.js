@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
 
   // Your password
   password: 'babotookiez',
-  database: 'employeeTracking_DB',
+  database: 'employee_DB',
 });
 
 const start = () => {
@@ -64,6 +64,7 @@ const start = () => {
       updateEmployee(answer.name);
     }
     else{
+      connection.end();
       return;
     }
   })
@@ -115,7 +116,7 @@ function addRole(name){
       {
         rolename: name,
         salary: answer.salary,
-        department_id = answer.deptid
+        department_id: answer.deptid
       },
       (err) => {
         if (err) throw err;
@@ -132,12 +133,12 @@ function addEmployee(name){
   .prompt([
     {
       name:"roleid",
-      message:"What is their role?",
+      message:"What is their role's ID number?",
       type:"number"
     },
     {
       name:"managerid",
-      message:"Manager ID?",
+      message:"Manager's ID number?",
       type:"number"
     }
   ])
@@ -165,24 +166,32 @@ function viewDepartment(name){
   connection.query('SELECT ? FROM department',
     {deptname:name},
   (err, results) => {
-
+    console.table(results);
+    console.log(results);
+    
+    start();
   })
 }
 function viewRole(name){
-  connection.query('SELECT ? FROM department',
+  connection.query('SELECT ? FROM roles',
     {rolename:name},
   (err, results) => {
-
+    console.table(results);
+    console.log(results);
+    
+    start();
   })
 }
 function viewEmployee(name){
-  connection.query('SELECT ? FROM department',
+  connection.query('SELECT ? FROM employee',
   {
     firstname: name.split(" ")[0],
     lastname: name.split(" ")[0]
   },
 (err, results) => {
-
+  console.table(results);
+  console.log(results)
+  start();
 })
 }
 
@@ -233,4 +242,5 @@ connection.connect((err) => {
   if (err) throw err;
   // run the start function after the connection is made to prompt the user
   start();
+  
 });
