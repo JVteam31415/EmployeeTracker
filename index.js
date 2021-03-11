@@ -163,34 +163,32 @@ function addEmployee(name){
 }
 
 function viewDepartment(name){
-  connection.query('SELECT ? FROM department',
-    {deptname:name},
+  connection.query('SELECT * FROM department WHERE department.deptname = "'+name+'"',
   (err, results) => {
     console.table(results);
-    console.log(results);
+    //console.log(results);
     
     start();
   })
 }
 function viewRole(name){
-  connection.query('SELECT ? FROM roles',
-    {rolename:name},
+  connection.query('SELECT * FROM roles WHERE roles.rolename = "'+name+'"',
   (err, results) => {
     console.table(results);
-    console.log(results);
+    //console.log(results);
     
     start();
   })
 }
 function viewEmployee(name){
-  connection.query('SELECT ? FROM employee',
-  {
-    firstname: name.split(" ")[0],
-    lastname: name.split(" ")[0]
-  },
+  var str = 'SELECT * FROM employee WHERE employee.firstname = "'
+  str+= name.split(" ")[0]+'" AND employee.lastname = "'+name.split(" ")[1]+'"';
+
+    console.log(str)
+  connection.query(str,
 (err, results) => {
   console.table(results);
-  console.log(results)
+  //console.log(results)
   start();
 })
 }
@@ -211,18 +209,10 @@ function updateEmployee(name){
   ])
   .then( (answer)=>{
 
-    connection.query(
-      'UPDATE employee SET ? WHERE ?',
-      [
-        {
-          role_id:answer.roleid,
-          manager_id: answer.managerid
-        },
-        {
-          firstname: name.split(" ")[0],
-          lastname: name.split(" ")[0]
-        },
-      ],
+    var str = 'UPDATE employee SET role_id = '+answer.roleid+', manager_id ='+
+    answer.managerid+' WHERE (firstname = "'+name.split(" ")[0]+'" AND lastname = "'+name.split(" ")[1]+'")';
+   
+    connection.query(str,
       (error) => {
         if (error) throw err;
         console.log('Employee Updated');
